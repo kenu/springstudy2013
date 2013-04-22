@@ -6,8 +6,6 @@ MimeMessageHelper를 이용한 파일 첨부
 
 MailSender 인터페이스를 제공 
 
-MailSender:
-
 ```java
 public interface MailSender {
 
