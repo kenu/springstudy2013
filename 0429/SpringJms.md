@@ -232,5 +232,45 @@ public class ArticleMessageReceiver {
 }
 
 ```
+JmsTemplate의 기본 목적지 설정 
+
+JmsTemplate 클래스의 send()메서드와 recive()메서드를 호출할때 목적지를 정정하지 않으면 defaultDestnition프로퍼티로 설정한다. 
+```xml
+	<bean id="articleQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="bbs.article.queue" />
+	</bean>
+	
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate"
+		p:connectionFactory-ref="connectionFactory" p:destination-ref="articleQueueDestination">
+	</bean>
+```
+
+위와 같이 설정시 
+
+목적지 지정하지 않고 rend() receive() 가능 
+
+```java
+jmsTemplate.send(destination, new MessageCreator() {
+	@Override
+	public Message createMessage(Session session) throws JMSException {
+		MapMessage mapMessage = session.createMapMessage();
+		mapMessage.setString("subject", article.getSubject());
+	return mapMessage;
+}
+
+jmsTemplate.send(new MessageCreator() {
+	@Override
+	public Message createMessage(Session session) throws JMSException {
+		MapMessage mapMessage = session.createMapMessage();
+		mapMessage.setString("subject", article.getSubject());
+	return mapMessage;
+}
+
+
+MapMessage mapMessage = (MapMessage) jmsTemplate.receive(destination);
+MapMessage mapMessage = (MapMessage) jmsTemplate.receive();
+```
+
+
 
 
