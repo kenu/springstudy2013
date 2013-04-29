@@ -252,18 +252,12 @@ JmsTemplate 클래스의 send()메서드와 recive()메서드를 호출할때 �
 ```java
 jmsTemplate.send(destination, new MessageCreator() {
 	@Override
-	public Message createMessage(Session session) throws JMSException {
-		MapMessage mapMessage = session.createMapMessage();
-		mapMessage.setString("subject", article.getSubject());
-	return mapMessage;
+.....
 }
 
 jmsTemplate.send(new MessageCreator() {
 	@Override
-	public Message createMessage(Session session) throws JMSException {
-		MapMessage mapMessage = session.createMapMessage();
-		mapMessage.setString("subject", article.getSubject());
-	return mapMessage;
+.....
 }
 
 
