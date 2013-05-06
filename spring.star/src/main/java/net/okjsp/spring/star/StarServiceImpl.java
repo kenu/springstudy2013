@@ -3,39 +3,33 @@ package net.okjsp.spring.star;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+
 public class StarServiceImpl implements StarService {
-
-	private Map<Integer, Double> dao;
-	private Map<Integer, Integer> countDao;
-	private Map<String, Long> historyDao;
-
-	public StarServiceImpl() {
-		dao = new HashMap<Integer, Double>();
-		countDao = new HashMap<Integer, Integer>();
-		historyDao = new HashMap<String, Long>();
-	}
-
+	private Log log = LogFactory.getLog(this.getClass());
+	
+	@Autowired
+	StarDao starDao;
+	
+	
 	public double getAverageOfItem(int i) {
-		Double sum = dao.get(i);
-		Integer count = countDao.get(i);
-		if (sum == null) {
-			return 0;
-		}
-		return sum / count;
+		return starDao.getAverageOfItem(i);
 	}
 
-	public void add(int i, double d, int userid) {
-		Long time = historyDao.get(i + "_" + userid);
-		if (time != null) {
+	public double add(int i, double d, int userid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userid", userid);
+		map.put("contents", i);
+		map.put("point", d);
+		try{
+			starDao.add(map);
+		}catch (DuplicateKeyException e){
 			throw new DuplicateVoteException();
-		} else {
-			historyDao.put(i + "_" + userid, System.currentTimeMillis());
 		}
-		double sum = (dao.get(i) != null) ? dao.get(i) : 0;
-		sum = sum + d;
-		dao.put(i, sum);
-		int count = (countDao.get(i) != null) ? countDao.get(i) + 1 : 1;
-		countDao.put(i, count);
+		return starDao.getAverageOfItem(i);
 	}
 
 }
