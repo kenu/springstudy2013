@@ -46,7 +46,21 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<filter>
+      <filter-name >CrossDomainFilter</filter-name>
+      <filter-class>net.okjsp.spring.star.CrossDomainFilter</filter-class >
+      <init-param >
+            <param-name> functionName</param-name >
+            <param-value> callback</param-value >
+    </init-param >
+  </filter >
+  <filter-mapping >
+    <filter-name >CrossDomainFilter</filter-name>
+    <url-pattern >/*</url-pattern>
+  </filter-mapping >
 	<!-- HTTP Method Filter -->
+	
+	
 	<filter>
 		<filter-name>httpMethodFilter</filter-name>
 		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
