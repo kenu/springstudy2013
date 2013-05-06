@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="net.okjsp.spring.star.StarDao">
+	<insert id="add">
+		INSERT INTO star
+		       	(userid
+		       	, contents
+		       	, point
+		       	)
+		VALUES (#{userid}
+				, #{contents}
+				, #{point})
+	</insert>
+	<select id="getAverageOfItem" parameterType="java.lang.Integer" resultType="java.lang.Double">
+		SELECT SUM(POINT)/COUNT(POINT) AS av FROM star WHERE contents = #{contents} 
+	</select>
+</mapper>
